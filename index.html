@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="UN Watch — the top United Nations news stories, summarised from public sources. Last updated 6 October 2026.">
+<title>UN Watch — Top United Nations News</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --un-blue:#009edb;
+    --un-blue-dark:#0077b6;
+    --navy:#0b2a4a;
+    --navy-2:#123a63;
+    --bg:#eef3f9;
+    --card:#ffffff;
+    --text:#17222e;
+    --muted:#5c6c7d;
+    --border:#d9e2ec;
+    --chip-bg:#e4edf6;
+    --accent:#f0a202;
+    --shadow:0 1px 2px rgba(11,42,74,.06),0 8px 24px rgba(11,42,74,.08);
+    --shadow-lg:0 12px 40px rgba(0,0,0,.28);
+    --radius:14px;
+  }
+  html[data-theme="dark"]{
+    --bg:#0d151f;
+    --card:#152130;
+    --text:#e7eef6;
+    --muted:#9db0c2;
+    --border:#26364a;
+    --chip-bg:#1d2d40;
+    --navy:#0a1826;
+    --navy-2:#10233a;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+    --shadow-lg:0 12px 44px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);color:var(--text);
+    line-height:1.55;-webkit-font-smoothing:antialiased;
+    transition:background .25s ease,color .25s ease;
+  }
+  a{color:var(--un-blue-dark);text-decoration:none}
+  html[data-theme="dark"] a{color:#5ec3ee}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;display:block}
+  button{font-family:inherit;cursor:pointer}
+
+  /* ── Header ─────────────────────────────────────────── */
+  .site-header{
+    background:linear-gradient(120deg,var(--navy) 0%,var(--navy-2) 55%,var(--un-blue-dark) 130%);
+    color:#fff;position:sticky;top:0;z-index:50;
+    box-shadow:0 2px 14px rgba(0,0,0,.25);
+  }
+  .header-inner{
+    max-width:1220px;margin:0 auto;padding:14px 20px;
+    display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    padding-left:max(20px,env(safe-area-inset-left));
+    padding-right:max(20px,env(safe-area-inset-right));
+  }
+  .brand{display:flex;align-items:center;gap:12px;color:#fff;flex-shrink:0}
+  .brand:hover{text-decoration:none}
+  .brand svg{width:40px;height:40px;flex-shrink:0}
+  .brand-name{font-family:'Source Serif 4',Georgia,serif;font-size:1.55rem;font-weight:800;letter-spacing:.2px;line-height:1.1}
+  .brand-tag{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#9cc9e8;font-weight:600}
+  .main-nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+  .main-nav a{
+    color:#dbeaf6;font-size:.86rem;font-weight:600;padding:10px 12px;
+    border-radius:8px;min-height:44px;display:inline-flex;align-items:center;
+  }
+  .main-nav a:hover{background:rgba(255,255,255,.12);text-decoration:none;color:#fff}
+  .header-tools{display:flex;align-items:center;gap:10px}
+  .date-pill{
+    font-size:.76rem;font-weight:600;color:#eaf4fc;
+    border:1px solid rgba(255,255,255,.35);border-radius:999px;
+    padding:8px 14px;white-space:nowrap;display:inline-flex;align-items:center;min-height:36px;
+  }
+  .theme-toggle{
+    width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.35);
+    background:rgba(255,255,255,.08);color:#fff;display:inline-flex;
+    align-items:center;justify-content:center;transition:background .2s;
+  }
+  .theme-toggle:hover{background:rgba(255,255,255,.2)}
+  .theme-toggle svg{width:20px;height:20px}
+  .icon-sun{display:none}
+  html[data-theme="dark"] .icon-sun{display:block}
+  html[data-theme="dark"] .icon-moon{display:none}
+
+  /* ── Ticker ─────────────────────────────────────────── */
+  .ticker{
+    background:var(--un-blue);color:#fff;overflow:hidden;
+    display:flex;align-items:stretch;font-size:.82rem;
+  }
+  .ticker-label{
+    background:var(--navy);font-weight:800;letter-spacing:.12em;
+    text-transform:uppercase;padding:10px 16px;display:flex;align-items:center;
+    flex-shrink:0;font-size:.72rem;
+  }
+  .ticker-track{overflow:hidden;flex:1;display:flex;align-items:center}
+  .ticker-content{
+    display:inline-flex;gap:48px;white-space:nowrap;padding:10px 0;
+    animation:ticker-scroll 60s linear infinite;will-change:transform;
+  }
+  .ticker-content span{display:inline-flex;align-items:center;gap:10px;font-weight:500}
+  .ticker-content b{color:#ffe9b0}
+  @keyframes ticker-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.ticker-content{animation:none}}
+
+  /* ── Layout ─────────────────────────────────────────── */
+  .container{
+    max-width:1220px;margin:0 auto;padding:26px 20px 40px;
+    padding-left:max(20px,env(safe-area-inset-left));
+    padding-right:max(20px,env(safe-area-inset-right));
+  }
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start}
+
+  /* ── Hero ───────────────────────────────────────────── */
+  .hero{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;box-shadow:var(--shadow);margin-bottom:28px;
+  }
+  .hero-visual{position:relative;min-height:280px;display:flex;align-items:flex-end}
+  .hero-visual svg.bg{position:absolute;inset:0;width:100%;height:100%}
+  .hero-kicker{
+    position:relative;z-index:1;padding:22px 26px;color:#fff;width:100%;
+    background:linear-gradient(transparent,rgba(4,22,40,.72));
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;color:#fff;
+    background:var(--un-blue-dark);padding:5px 11px;border-radius:999px;
+  }
+  .hero-body{padding:24px 26px 26px}
+  .hero-body h1{
+    font-family:'Source Serif 4',Georgia,serif;font-size:clamp(1.5rem,3.4vw,2.15rem);
+    font-weight:800;line-height:1.22;margin:4px 0 12px;
+  }
+  .hero-body p{color:var(--muted);font-size:1.02rem;max-width:72ch}
+  .meta{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    font-size:.8rem;color:var(--muted);margin-top:16px;
+  }
+  .meta .dot{width:4px;height:4px;border-radius:50%;background:var(--muted);opacity:.6}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;min-height:44px;
+    background:var(--un-blue);color:#fff;border:none;border-radius:10px;
+    padding:11px 20px;font-size:.88rem;font-weight:700;margin-top:18px;
+    transition:background .2s,transform .15s;
+  }
+  .btn:hover{background:var(--un-blue-dark);text-decoration:none;transform:translateY(-1px)}
+  .btn svg{width:16px;height:16px}
+
+  /* ── Controls (search + filters) ────────────────────── */
+  .controls{
+    display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+    margin:6px 0 22px;
+  }
+  .search-wrap{position:relative;flex:1 1 260px;min-width:220px}
+  .search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none}
+  #search{
+    width:100%;min-height:46px;border:1px solid var(--border);border-radius:12px;
+    background:var(--card);color:var(--text);padding:12px 16px 12px 42px;font-size:.92rem;
+    font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;
+  }
+  #search:focus{border-color:var(--un-blue);box-shadow:0 0 0 3px rgba(0,158,219,.18)}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{
+    border:1px solid var(--border);background:var(--chip-bg);color:var(--text);
+    border-radius:999px;padding:9px 15px;font-size:.8rem;font-weight:600;
+    min-height:44px;transition:all .18s;
+  }
+  .chip:hover{border-color:var(--un-blue)}
+  .chip.active{background:var(--un-blue);border-color:var(--un-blue);color:#fff}
+  .results-line{font-size:.8rem;color:var(--muted);margin:0 0 14px}
+
+  /* ── Story grid ─────────────────────────────────────── */
+  .section-title{
+    font-family:'Source Serif 4',Georgia,serif;font-size:1.35rem;font-weight:800;
+    display:flex;align-items:center;gap:12px;margin:4px 0 18px;
+  }
+  .section-title::after{content:"";flex:1;height:1px;background:var(--border)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:20px}
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;
+    cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;
+    text-align:left;color:inherit;font:inherit;width:100%;
+  }
+  .card:hover,.card:focus-visible{transform:translateY(-4px);box-shadow:0 14px 34px rgba(11,42,74,.16)}
+  html[data-theme="dark"] .card:hover{box-shadow:0 14px 34px rgba(0,0,0,.5)}
+  .card:focus-visible{outline:3px solid var(--un-blue);outline-offset:2px}
+  .card-visual{
+    position:relative;height:158px;display:flex;align-items:center;justify-content:center;
+    overflow:hidden;flex-shrink:0;
+  }
+  .card-visual .wm{
+    position:absolute;inset:auto 12px 8px auto;font-size:.62rem;font-weight:800;
+    letter-spacing:.22em;color:rgba(255,255,255,.5);text-transform:uppercase;
+  }
+  .card-visual svg.icon{width:64px;height:64px;color:rgba(255,255,255,.92);filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}
+  .card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:9px;flex:1}
+  .card h3{
+    font-family:'Source Serif 4',Georgia,serif;font-size:1.06rem;font-weight:700;line-height:1.32;
+  }
+  .card p{font-size:.86rem;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .card .meta{margin-top:auto;padding-top:4px}
+  .empty{
+    grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--muted);
+    border:1px dashed var(--border);border-radius:var(--radius);background:var(--card);
+  }
+  .empty strong{display:block;font-size:1.05rem;margin-bottom:6px;color:var(--text)}
+
+  /* ── Sidebar ────────────────────────────────────────── */
+  .sidebar{position:sticky;top:96px;display:flex;flex-direction:column;gap:20px}
+  .panel{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  .panel-head{
+    background:linear-gradient(100deg,var(--navy),var(--navy-2));color:#fff;
+    padding:13px 18px;font-size:.8rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    display:flex;align-items:center;gap:9px;
+  }
+  .panel-head .pulse{width:9px;height:9px;border-radius:50%;background:#ff5a5a;animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .updates{list-style:none}
+  .updates li{border-bottom:1px solid var(--border)}
+  .updates li:last-child{border-bottom:none}
+  .updates button{
+    display:block;width:100%;text-align:left;background:none;border:none;color:inherit;
+    padding:13px 18px;font-size:.84rem;line-height:1.45;min-height:44px;transition:background .15s;
+  }
+  .updates button:hover{background:var(--chip-bg)}
+  .updates time{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--un-blue-dark);margin-bottom:3px}
+  html[data-theme="dark"] .updates time{color:#5ec3ee}
+  .about-mini{padding:16px 18px;font-size:.83rem;color:var(--muted)}
+  .about-mini p+p{margin-top:10px}
+
+  /* ── Modal ──────────────────────────────────────────── */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(6,18,32,.62);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;z-index:100;padding:18px;
+  }
+  .modal-overlay.open{display:flex}
+  .modal{
+    background:var(--card);color:var(--text);border-radius:16px;max-width:720px;width:100%;
+    max-height:min(86vh,900px);overflow:auto;box-shadow:var(--shadow-lg);
+    animation:modal-in .22s ease;
+  }
+  @keyframes modal-in{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+  .modal-visual{position:relative;height:190px;display:flex;align-items:center;justify-content:center}
+  .modal-visual svg.icon{width:76px;height:76px;color:rgba(255,255,255,.92)}
+  .modal-visual .wm{position:absolute;right:14px;bottom:10px;font-size:.62rem;font-weight:800;letter-spacing:.22em;color:rgba(255,255,255,.5);text-transform:uppercase}
+  .modal-close{
+    position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;
+    border:none;background:rgba(0,0,0,.35);color:#fff;font-size:1.15rem;
+    display:flex;align-items:center;justify-content:center;transition:background .2s;
+  }
+  .modal-close:hover{background:rgba(0,0,0,.55)}
+  .modal-body{padding:24px 28px 28px}
+  .modal-body h2{font-family:'Source Serif 4',Georgia,serif;font-size:1.5rem;font-weight:800;line-height:1.28;margin:10px 0 14px}
+  .modal-body .full-text{color:var(--text);font-size:.96rem}
+  .modal-body .full-text p+p{margin-top:12px}
+  .modal-src{
+    margin-top:22px;padding-top:18px;border-top:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  }
+  .modal-src .src-name{font-size:.84rem;color:var(--muted)}
+  body.modal-open{overflow:hidden}
+
+  /* ── Footer ─────────────────────────────────────────── */
+  .site-footer{
+    background:linear-gradient(120deg,var(--navy),var(--navy-2));color:#c9dcee;margin-top:46px;
+  }
+  .footer-inner{
+    max-width:1220px;margin:0 auto;padding:38px 20px 26px;
+    display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:32px;
+    padding-left:max(20px,env(safe-area-inset-left));
+    padding-right:max(20px,env(safe-area-inset-right));
+  }
+  .site-footer h4{color:#fff;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+  .site-footer p,.site-footer li{font-size:.85rem;line-height:1.65}
+  .site-footer a{color:#8fd0f0}
+  .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:12px;color:#fff}
+  .footer-brand svg{width:32px;height:32px}
+  .footer-brand span{font-family:'Source Serif 4',Georgia,serif;font-weight:800;font-size:1.2rem}
+  .footer-bottom{
+    border-top:1px solid rgba(255,255,255,.14);margin-top:8px;
+    padding:16px 20px calc(16px + env(safe-area-inset-bottom));
+    text-align:center;font-size:.78rem;color:#9db8cf;
+  }
+
+  /* ── Responsive ─────────────────────────────────────── */
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr}
+    .sidebar{position:static}
+    .footer-inner{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:680px){
+    .header-inner{gap:10px}
+    .main-nav{order:3;width:100%;margin-left:0;justify-content:flex-start}
+    .header-tools{margin-left:auto}
+    .brand-name{font-size:1.3rem}
+    .date-pill{display:none}
+    .hero-visual{min-height:200px}
+    .footer-inner{grid-template-columns:1fr}
+    .modal-body{padding:20px}
+    .grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ Header ══ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#top" aria-label="UN Watch home">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="21" stroke="#7ec8ec" stroke-width="2"/>
+        <ellipse cx="24" cy="24" rx="10" ry="21" stroke="#7ec8ec" stroke-width="1.6"/>
+        <path d="M3.5 24h41M6.5 13h35M6.5 35h35" stroke="#7ec8ec" stroke-width="1.6"/>
+        <path d="M24 3c5 6.5 5 35.5 0 42M24 3c-5 6.5-5 35.5 0 42" stroke="#7ec8ec" stroke-width="1.2" opacity=".7"/>
+      </svg>
+      <span>
+        <span class="brand-name">UN Watch</span><br>
+        <span class="brand-tag">United Nations News Desk</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#top-story">Top Story</a>
+      <a href="#latest">Latest Stories</a>
+      <a href="#updates">Live Updates</a>
+      <a href="#about">About</a>
+    </nav>
+    <div class="header-tools">
+      <span class="date-pill" id="today-date">Tuesday, 6 October 2026</span>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ News ticker ══ -->
+<div class="ticker" aria-label="Breaking headlines">
+  <span class="ticker-label">Developing</span>
+  <div class="ticker-track">
+    <div class="ticker-content" id="ticker-content"><!-- filled by JS --></div>
+  </div>
+</div>
+
+<div class="container" id="top">
+  <div class="layout">
+    <main>
+      <!-- ══ Hero / Top story ══ -->
+      <section class="hero" id="top-story" aria-label="Top story"><!-- filled by JS --></section>
+
+      <!-- ══ Controls ══ -->
+      <div class="controls" role="search">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="search" type="search" placeholder="Search stories, places, topics…" aria-label="Search stories">
+        </div>
+        <div class="filters" id="filters" role="group" aria-label="Filter by category"><!-- filled by JS --></div>
+      </div>
+      <p class="results-line" id="results-line"></p>
+
+      <!-- ══ Story grid ══ -->
+      <section id="latest" aria-label="Latest stories">
+        <h2 class="section-title">Latest Stories</h2>
+        <div class="grid" id="story-grid"><!-- filled by JS --></div>
+      </section>
+    </main>
+
+    <!-- ══ Sidebar ══ -->
+    <aside class="sidebar">
+      <div class="panel" id="updates">
+        <div class="panel-head"><span class="pulse"></span>Latest Updates</div>
+        <ul class="updates" id="updates-list"><!-- filled by JS --></ul>
+      </div>
+      <div class="panel" id="about">
+        <div class="panel-head">About UN Watch</div>
+        <div class="about-mini">
+          <p><strong>UN Watch</strong> is an independent news digest tracking the biggest stories at the United Nations — from Security Council votes and peacekeeping missions to humanitarian appeals and human rights findings.</p>
+          <p>All content is summarised in our own words from public reporting by UN News, UN Meetings Coverage, and international wire services. Always follow the source link for the full original article.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ══ Footer ══ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <circle cx="24" cy="24" r="21" stroke="#7ec8ec" stroke-width="2"/>
+          <ellipse cx="24" cy="24" rx="10" ry="21" stroke="#7ec8ec" stroke-width="1.6"/>
+          <path d="M3.5 24h41M6.5 13h35M6.5 35h35" stroke="#7ec8ec" stroke-width="1.6"/>
+        </svg>
+        <span>UN Watch</span>
+      </div>
+      <p>An independent digest of the top stories at the United Nations, compiled for readers who want the essentials fast: what happened, when, and where to read more.</p>
+    </div>
+    <div>
+      <h4>Disclaimer</h4>
+      <p>UN Watch is not affiliated with the United Nations. All stories are summaries of public reporting by UN News, UN Meetings Coverage &amp; Press Releases, AFP and NBC News. Summaries are written in our own words; facts, figures and quotes belong to the original publishers. Follow each story’s source link for the complete, authoritative article.</p>
+    </div>
+    <div>
+      <h4>Sources</h4>
+      <p style="margin-bottom:8px">Primary outlets used for this edition:</p>
+      <ul style="list-style:none">
+        <li>· <a href="https://news.un.org/en/" target="_blank" rel="noopener">UN News</a></li>
+        <li>· <a href="https://press.un.org/en" target="_blank" rel="noopener">UN Meetings Coverage &amp; Press Releases</a></li>
+        <li>· <a href="https://www.afp.com/" target="_blank" rel="noopener">Agence France-Presse</a></li>
+        <li>· <a href="https://www.nbcnews.com/" target="_blank" rel="noopener">NBC News</a></li>
+        <li>· <a href="https://www.securitycouncilreport.org/" target="_blank" rel="noopener">Security Council Report</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    Last updated: 6 October 2026 &nbsp;·&nbsp; UN Watch — an independent news summary project &nbsp;·&nbsp; Not an official United Nations publication
+  </div>
+</footer>
+
+<!-- ══ Modal ══ -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <article class="modal" id="modal"><!-- filled by JS --></article>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   DATA — edit stories here. See the comment at the top of the file.
+   ═══════════════════════════════════════════════════════════════ */
+
+const CATEGORIES = {
+  "Peace & Security": { colors:["#0b3d91","#009edb"], icon:'<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>' },
+  "Security Council": { colors:["#123a63","#0077b6"], icon:'<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>' },
+  "General Assembly": { colors:["#00695c","#26a69a"], icon:'<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>' },
+  "Humanitarian":     { colors:["#b34700","#f08c1e"], icon:'<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>' },
+  "Health":           { colors:["#1b5e20","#43a047"], icon:'<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>' },
+  "Human Rights":     { colors:["#4a148c","#8e24aa"], icon:'<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 7l7-4 7 4M5 7l-3 7a3.5 3.5 0 0 0 6 0L5 7zM19 7l-3 7a3.5 3.5 0 0 0 6 0l-3-7zM8 21h8"/></svg>' }
+};
+
+const STORIES = [
+  {
+    id: 1,
+    title: "Guterres urges end to US–Iran conflict: “Return to diplomacy”",
+    cat: "Peace & Security",
+    date: "6 October 2026",
+    source: "UN News",
+    url: "https://news.un.org/en/story/2026/10/1168532",
+    summary: "Speaking in Islamabad, Secretary-General António Guterres called on all parties in the US–Iran conflict to end the fighting, return to diplomacy and fully restore freedom of navigation in line with international law. He praised Pakistan’s “pivotal role” in brokering the 17 June Islamabad Memorandum of Understanding and the ceasefire that followed.",
+    full: "During a visit to Islamabad, Secretary-General António Guterres delivered what he called a “loud and clear message to all parties” in the US–Iran conflict: “End the conflict. Return to diplomacy. Fully restore navigational rights and freedoms in accordance with international law.”\nThe crisis began in late February 2026 following joint US–Israeli strikes on Iran. Tehran responded with counter-attacks on targets in Gulf countries and Jordan and blocked transit through the Strait of Hormuz — a chokepoint critical to global trade in crude oil, fertilisers and liquefied natural gas — leaving hundreds of ships and their crews stranded at sea for months. Fighting has since spread to Yemen’s Red Sea coast, where Iran-backed Houthi forces battle Government troops supported by Saudi Arabia for control of the Bab al-Mandab Strait.\nGuterres saluted Pakistan’s “pivotal role” in creating conditions for dialogue, saying its efforts “helped deliver the 17 June Islamabad Memorandum of Understanding, the subsequent ceasefire, and the framework for further negotiations.” He added that “there will never be peace in the region until the right of self-determination of the Palestinian people is fully realized,” and praised Pakistan as one of the largest longstanding contributors to UN peacekeeping.",
+    top: true
+  },
+  {
+    id: 2,
+    title: "Security Council renews Haiti Gang Suppression Force for six months",
+    cat: "Security Council",
+    date: "29 September 2026",
+    source: "UN Meetings Coverage (SC/16466)",
+    url: "https://press.un.org/en/2026/sc16466.doc.htm",
+    summary: "The Security Council adopted resolution 2829 (2026), extending the Gang Suppression Force in Haiti until 31 March 2027 by 12 votes to none, with China, Pakistan and Russia abstaining. Members called for the force — still well below its planned 5,500-strong deployment — to be fully staffed so it can reclaim territory from gangs and create conditions for elections on 13 December.",
+    full: "By a vote of 12 in favour to none against, with three abstentions (China, Pakistan and the Russian Federation), the Security Council extended the mandate of the Gang Suppression Force (GSF) in Haiti until 31 March 2027. The resolution stresses that the Force must operate in compliance with international law, including human rights law, and highlights reintegration support for children formerly associated with gangs.\nHaiti’s representative urged that the Force now receive the personnel, equipment and capabilities needed to become fully operational, stressing that “it is not enough to take territory from the gangs” — recovered areas must be held and public services restored. The United States, a co-sponsor, said the Force “exists and, better yet, it is beginning to work,” paying tribute to troops and police from Chad, El Salvador, Guatemala, Jamaica, Mongolia and Sri Lanka. China and Russia questioned whether an external military force can resolve what they described as a deep-seated governance crisis.\nThe renewal comes as Haiti prepares for its first elections in a decade and a constitutional referendum on 13 December. AFP reported the GSF had been expected to ramp up to 5,500 personnel between April and October but remains short of that goal, with the UN Support Office in Haiti backing just over 1,500 personnel as further contingents arrive."
+  },
+  {
+    id: 3,
+    title: "WHO appeals for massive influx of medical aid into Gaza ahead of winter",
+    cat: "Health",
+    date: "2 October 2026",
+    source: "UN News",
+    url: "https://news.un.org/en/audio/2026/10/1168510",
+    summary: "The World Health Organization urged Israeli authorities to “release the pressure” on medical supplies entering Gaza, warning that repeated delays in delivering medicines and prosthetics are having devastating consequences. Almost 12 months after a fragile ceasefire, OCHA says the humanitarian situation remains “overwhelming,” with winter raising the risk of preventable disease outbreaks.",
+    full: "The WHO Representative in the Occupied Palestinian Territory, Dr Reinhilde Van De Weerdt, appealed to the Israeli authorities to “release the pressure” on medical supplies, stressing that essential medicines and prosthetics “should not be considered as dual use.” “A truck full of non-priority supplies or the right supplies arriving too late doesn’t save lives,” she said, adding that when asked whether Gaza’s health workers have the supplies they need, when and where needed, “today, unfortunately, that answer is clearly, ‘no’.”\nIt is almost 12 months since a fragile ceasefire agreement was reached between Hamas and Israel, but it has not prevented ongoing Israeli airstrikes and other military activity, and the UN aid coordination office OCHA describes the humanitarian situation as “overwhelming.” WHO warned that, as in previous winters, Gaza’s residents face a heightened risk of preventable disease outbreaks linked to the absence of safe shelter, lack of clean water and a high prevalence of rats — while the destruction of public health laboratories has complicated efforts to identify potential epidemics."
+  },
+  {
+    id: 4,
+    title: "DR Congo Ebola response hit as patient transit centre burns down",
+    cat: "Health",
+    date: "1 October 2026",
+    source: "UN News",
+    url: "https://news.un.org/en/audio/2026/10/1168501",
+    summary: "Efforts to contain the Ebola outbreak in the Democratic Republic of the Congo suffered a major setback when a transit centre for patients burned down at the Kigonze displacement camp in Ituri province. The outbreak has spread across seven provinces, and two Ebola response workers were reportedly killed in neighbouring North Kivu.",
+    full: "UN senior Ebola response coordinator Julien Harneis said the destruction of the facility at Kigonze camp would further undermine efforts to treat patients and contain the virus: “When we lose a centre, that means we lose capacity, we lose investment and we have to start again. And above all, it means that people do not get access to the care that they really need.”\nThe camp, which previously sheltered some 19,000 people displaced by violence, has been abandoned amid renewed fighting in eastern DRC. More than 5,000 people have fled their homes in Ituri in recent days, while insecurity has disrupted patient transfers and the transport of laboratory samples. Two people involved in the Ebola response were reportedly killed in neighbouring North Kivu province.\nThe World Health Organization has appealed for more health workers and treatment beds to contain the outbreak, which has spread across seven provinces of the DRC."
+  },
+  {
+    id: 5,
+    title: "Ukraine war a “human rights catastrophe” as winter threats mount",
+    cat: "Human Rights",
+    date: "2 October 2026",
+    source: "UN News",
+    url: "https://news.un.org/en/audio/2026/10/1168510",
+    summary: "UN human rights chief Volker Türk told the Human Rights Council that Russia’s full-scale invasion is killing and injuring hundreds of people every week, with monitors verifying nearly 15,300 civilian casualties in the first eight months of 2026. Separately, aid teams warned winterization efforts must accelerate amid Russian attacks on Ukraine’s energy networks.",
+    full: "Addressing the Human Rights Council in Geneva, High Commissioner Volker Türk condemned what he called a “human rights catastrophe” in Ukraine, marked by “shocking levels of sexual violence against civilians and prisoners of war” by Russian forces. “The full-scale invasion unleashed by the Russian Federation is killing and injuring hundreds of people every week, as frontlines barely move,” he said, listing strikes on apartment buildings, schools, medical centres, railways, seaports and energy infrastructure. In the first eight months of 2026, UN monitors verified nearly 15,300 civilians killed and injured — on average more than 400 every week.\nUN humanitarians separately warned that winterization efforts need to speed up amid ongoing attacks on energy networks. Last winter millions went without heating, water or essential health services for prolonged periods. WHO highlighted increasing attacks on logistics and warehouse infrastructure, and noted that in the first six months of 2026 attacks killed nearly 1,400 civilians and injured almost 8,000 — 37 per cent higher than the same period last year — with 325 recorded attacks on healthcare."
+  },
+  {
+    id: 6,
+    title: "Haitians “trapped” between gang violence and destruction, rights chief warns",
+    cat: "Human Rights",
+    date: "2 October 2026",
+    source: "UN News",
+    url: "https://news.un.org/en/audio/2026/10/1168510",
+    summary: "Updating the Human Rights Council, Volker Türk said at least 5,700 people in Haiti have been confirmed killed or injured by gangs — or during operations against them — since 1 January, with more than 230 kidnapped and at least 1,000 women and girls raped. He welcomed the first Gang Suppression Force operations but said the force “remains far below the strength needed.”",
+    full: "UN High Commissioner for Human Rights Volker Türk told the Human Rights Council that Haitians remain in the grip of lethal gang violence as gangs continue to “adapt and expand.” According to his office, OHCHR, at least 5,700 people have been confirmed killed or injured by gangs — or during operations against them — since 1 January 2026, while gang members have kidnapped more than 230 people and raped at least 1,000 women and girls. The real figures, he said, are likely much higher.\nTürk welcomed the first operations of the Security Council-mandated Gang Suppression Force, saying they will help boost security, “but the Force remains far below the strength needed,” and he called for its full, accelerated deployment with human rights safeguards embedded. He also warned that “extortion, looting and destruction of property” are crippling economic activity, and that constant danger prevents people from reaching schools, hospitals and essential services."
+  },
+  {
+    id: 7,
+    title: "Marshall Islands nuclear testing legacy in Human Rights Council spotlight",
+    cat: "Human Rights",
+    date: "1 October 2026",
+    source: "UN News",
+    url: "https://news.un.org/en/audio/2026/10/1168501",
+    summary: "The enduring radioactive legacy of 67 US nuclear tests conducted in the Marshall Islands between 1946 and 1958 took centre stage at the Human Rights Council. UN deputy rights chief Awa Dabo said affected communities “have the right to an effective remedy” and called on US authorities to declassify data on radiation exposure and testing records.",
+    full: "UN deputy human rights chief Awa Dabo told the Human Rights Council that the legacy of 67 known US nuclear tests conducted between 1946 and 1958 “lives on in the bodies of Marshallese people, in lands poisoned and communities displaced” today. “Virtually every Marshallese family has been touched by the enduring health consequences of the nuclear testing, which include elevated rates of cancer,” she said, noting that women carry painful memories of miscarriages, stillbirths and severe congenital conditions.\nDabo said communities affected by harmful radiation face social stigma and are called “poison people,” insisting that “Marshallese communities have the right to an effective remedy for the harm caused by the nuclear tests.” She called on US authorities to declassify information on radiation exposure data and testing records."
+  },
+  {
+    id: 8,
+    title: "General Assembly weighs China and Russia vetoes on Iran sanctions panel",
+    cat: "General Assembly",
+    date: "1 October 2026",
+    source: "UN Meetings Coverage (GA/12792)",
+    url: "https://press.un.org/en/content/security-council",
+    summary: "Under the Assembly’s “veto initiative,” speakers debated the vetoes cast by China and Russia at the Security Council’s 17 September meeting against a resolution that would have extended the Panel of Experts monitoring UN sanctions on Iran. The debate is required within 10 working days of any veto under resolution 76/262.",
+    full: "Pursuant to its veto initiative, the General Assembly met to weigh in on the vetoes recently cast by China and the Russian Federation concerning a Security Council resolution that would have extended the mandate of the Panel of Experts tasked with monitoring implementation of United Nations sanctions on Iran.\nThe meeting was held under resolution 76/262, which requires an Assembly debate within 10 working days of a veto being cast in the Security Council, unless an emergency special session addresses the same situation. The procedure gives the wider UN membership an opportunity to discuss the issue and promotes transparency and accountability in the use of the veto. The Council’s 17 September 2026 meeting was held in connection with the item “Non-proliferation,” for which it submitted a special report to the Assembly (A/81/395)."
+  },
+  {
+    id: 9,
+    title: "“Money alone won’t get us there”: UN steps up aid for 12 forgotten crises",
+    cat: "Humanitarian",
+    date: "2 October 2026",
+    source: "UN News",
+    url: "https://news.un.org/en/story/2026/10/1168516",
+    summary: "The UN’s Central Emergency Response Fund released $150 million for 12 of the world’s most neglected emergencies — including Afghanistan, the Occupied Palestinian Territory, Yemen, Sudan and South Sudan — plus $10 million earmarked for people with disabilities. The release takes CERF’s 2026 allocations to $483 million.",
+    full: "Emergency Relief Coordinator Tom Fletcher announced a $150 million allocation from the Central Emergency Response Fund (CERF) for 12 underfunded crises: Afghanistan, the Occupied Palestinian Territory and Yemen receive $18 million each; Somalia and Sudan $16 million each; South Sudan $15 million; Burkina Faso, Mali and Niger $10 million each; Chad $9 million; Cameroon $6 million; and Cuba $4 million. A further $10 million is set aside for people with disabilities in the same 12 crises, with the UN Global Disability Fund adding up to $4 million through its Inclusion Catalyst Hub.\nBut “money alone won’t get us there,” the UN stressed — access remains the sticking point. Five of the 12 crises are among 10 contexts where Fletcher has called for urgent diplomatic action to secure humanitarian access, which would open the way to assistance for 11 million people.\nCERF, managed by OCHA, bases underfunded-emergency allocations on analysis of more than 100 humanitarian indicators. Friday’s release takes its 2026 allocations to $483 million; since its creation by the General Assembly in 2005, the fund has channelled some $10.2 billion to people in more than 117 countries and territories."
+  },
+  {
+    id: 10,
+    title: "WHO monitoring as Russian plague-lab worker dies of suspected infection",
+    cat: "Health",
+    date: "5 October 2026",
+    source: "NBC News",
+    url: "https://www.nbcnews.com/world/europe/russia-plague-suspected-lab-worker-dies-200-medical-observation-rcna601559",
+    summary: "A 28-year-old worker at Russia’s Irkutsk Anti-Plague Research Institute died of a suspected “particularly dangerous infection,” prompting authorities to place nearly 200 people under medical observation. The WHO said it was aware of reports that the worker died of “severe pneumonia” but that no cause of death has been officially confirmed.",
+    full: "Russian authorities reported that a 28-year-old laboratory worker at the Irkutsk Anti-Plague Research Institute of Siberia and the Far East died after developing pneumonia of unknown cause, prompting quarantines and heightened health precautions in the region, with nearly 200 people placed under medical observation. The hospital in Shelekhov, just outside Irkutsk, where she was treated was placed under quarantine, and the head of Russia’s public health watchdog Rospotrebnadzor flew to Irkutsk for an emergency meeting.\nRospotrebnadzor said testing detected “no microorganisms associated with the patient’s professional activities” and that an investigation found no laboratory incident involving pathogenic microorganisms. The World Health Organization said in a statement that it was aware of reports that a lab worker had died of “severe pneumonia” but that “no cause of death has been officially confirmed.” US officials said they were watching and monitoring the situation closely and encouraged Russian authorities to share accurate information quickly and openly."
+  },
+  {
+    id: 11,
+    title: "Greece takes Security Council helm as race for next UN chief intensifies",
+    cat: "Security Council",
+    date: "1 October 2026",
+    source: "Security Council Report / UN Press",
+    url: "https://www.securitycouncilreport.org/whatsinblue/2026/10/security-council-programme-of-work-for-october-2026.php",
+    summary: "Greece assumed the rotating Security Council presidency for October, planning signature events on emerging technologies and maritime security, and on children and armed conflict. With António Guterres’s term ending on 31 December, Council members are continuing “straw polls” on candidates to become the next Secretary-General.",
+    full: "Greece holds the Security Council presidency for October 2026 and has organised two signature events: a high-level briefing on emerging technologies with an emphasis on maritime security, expected to be chaired by Prime Minister Kyriakos Mitsotakis, and a briefing on children and armed conflict marking the 30th anniversary of the mandate, expected to be chaired by Foreign Minister Giorgos Gerapetritis. The month’s crowded programme also includes the annual open debate on women, peace and security, a vote on renewing the UN Support Mission in Libya, renewal of the Western Sahara mission MINURSO, Haiti sanctions renewal and the quarterly Middle East open debate.\nBehind the scenes, Council members continue conducting “straw polls” to gauge support for candidates to succeed Secretary-General António Guterres, whose second term ends on 31 December 2026. Ambassador Aglaia Balta of Greece said “October is the month when we need to make progress and even agree on the new Secretary-General,” adding that the presidency intends to keep consulting members, including on the use of colour-coded ballots."
+  }
+];
+
+/* Short lines for the breaking-news ticker */
+const TICKER = [
+  "Guterres in Islamabad urges end to US–Iran conflict: “Return to diplomacy”",
+  "Security Council renews Haiti Gang Suppression Force until 31 March 2027",
+  "WHO appeals for massive medical aid influx into Gaza ahead of winter",
+  "Ebola transit centre destroyed in DR Congo as outbreak spans seven provinces",
+  "UN releases $150m from CERF for 12 forgotten crises",
+  "Greece takes Security Council presidency as Secretary-General race heats up",
+  "General Assembly debates China–Russia vetoes on Iran sanctions panel"
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDERING + INTERACTION (no need to edit below this line)
+   ═══════════════════════════════════════════════════════════════ */
+
+const $ = s => document.querySelector(s);
+const state = { cat: "All", query: "" };
+
+function catStyle(cat){
+  const c = CATEGORIES[cat] || { colors:["#123a63","#009edb"] };
+  return `background:linear-gradient(135deg,${c.colors[0]},${c.colors[1]})`;
+}
+function catIcon(cat){
+  return (CATEGORIES[cat] && CATEGORIES[cat].icon) || "";
+}
+function esc(s){ const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+
+/* Theme toggle (persisted) */
+(function(){
+  const saved = localStorage.getItem("unwatch-theme");
+  if (saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    document.documentElement.setAttribute("data-theme","dark");
+  }
+  $("#theme-toggle").addEventListener("click", () => {
+    const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("unwatch-theme", next);
+  });
+})();
+
+/* Ticker (content duplicated for a seamless loop) */
+(function(){
+  const items = TICKER.map(t => `<span><b>▸</b> ${esc(t)}</span>`).join("");
+  $("#ticker-content").innerHTML = items + items;
+})();
+
+/* Hero */
+function renderHero(){
+  const s = STORIES.find(x => x.top) || STORIES[0];
+  $("#top-story").innerHTML = `
+    <div class="hero-visual" style="${catStyle(s.cat)}">
+      <svg class="bg" viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g stroke="rgba(255,255,255,.14)" fill="none" stroke-width="1.4">
+          <circle cx="660" cy="90" r="130"/><ellipse cx="660" cy="90" rx="60" ry="130"/>
+          <path d="M530 90h260M555 35h210M555 145h210"/>
+        </g>
+        <g fill="rgba(255,255,255,.1)">
+          <rect x="40" y="120" width="26" height="160"/><rect x="78" y="90" width="26" height="190"/>
+          <rect x="116" y="140" width="26" height="140"/><rect x="154" y="70" width="26" height="210"/>
+          <rect x="192" y="110" width="26" height="170"/><rect x="230" y="150" width="26" height="130"/>
+        </g>
+      </svg>
+      <div class="hero-kicker"><span class="badge">Top Story · ${esc(s.cat)}</span></div>
+    </div>
+    <div class="hero-body">
+      <h1>${esc(s.title)}</h1>
+      <p>${esc(s.summary)}</p>
+      <div class="meta"><span>${esc(s.date)}</span><span class="dot"></span><span>Source: ${esc(s.source)}</span></div>
+      <button class="btn" data-open="${s.id}">Read full story
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>`;
+}
+
+/* Filter chips */
+function renderFilters(){
+  const cats = ["All", ...Object.keys(CATEGORIES)];
+  $("#filters").innerHTML = cats.map(c =>
+    `<button class="chip${state.cat===c?" active":""}" data-cat="${esc(c)}" aria-pressed="${state.cat===c}">${esc(c)}</button>`
+  ).join("");
+}
+
+/* Story cards */
+function matches(s){
+  const okCat = state.cat === "All" || s.cat === state.cat;
+  const q = state.query.trim().toLowerCase();
+  const okQ = !q || (s.title + " " + s.summary + " " + s.cat + " " + s.source).toLowerCase().includes(q);
+  return okCat && okQ;
+}
+function renderGrid(){
+  const list = STORIES.filter(s => !s.top && matches(s));
+  const grid = $("#story-grid");
+  if (!list.length){
+    grid.innerHTML = `<div class="empty"><strong>No stories found</strong>Try a different search term or category filter.</div>`;
+  } else {
+    grid.innerHTML = list.map(s => `
+      <button class="card" data-open="${s.id}" aria-haspopup="dialog">
+        <div class="card-visual" style="${catStyle(s.cat)}">
+          ${catIcon(s.cat)}
+          <span class="wm">UN Watch</span>
+        </div>
+        <div class="card-body">
+          <span class="badge" style="${catStyle(s.cat)}">${esc(s.cat)}</span>
+          <h3>${esc(s.title)}</h3>
+          <p>${esc(s.summary)}</p>
+          <div class="meta"><span>${esc(s.date)}</span><span class="dot"></span><span>${esc(s.source)}</span></div>
+        </div>
+      </button>`).join("");
+  }
+  $("#results-line").textContent =
+    `Showing ${list.length} of ${STORIES.length - 1} stories` +
+    (state.cat !== "All" ? ` in “${state.cat}”` : "") +
+    (state.query.trim() ? ` matching “${state.query.trim()}”` : "");
+}
+
+/* Sidebar updates */
+function renderUpdates(){
+  $("#updates-list").innerHTML = STORIES.slice(0, 8).map(s => `
+    <li><button data-open="${s.id}"><time>${esc(s.date)}</time>${esc(s.title)}</button></li>
+  `).join("");
+}
+
+/* Modal */
+const overlay = $("#modal-overlay");
+let lastFocus = null;
+function openStory(id){
+  const s = STORIES.find(x => x.id === id);
+  if (!s) return;
+  const paras = (s.full || s.summary).split(/\n+/).map(p => `<p>${esc(p)}</p>`).join("");
+  $("#modal").innerHTML = `
+    <div class="modal-visual" style="${catStyle(s.cat)}">
+      ${catIcon(s.cat)}
+      <span class="wm">UN Watch</span>
+      <button class="modal-close" id="modal-close" aria-label="Close story">✕</button>
+    </div>
+    <div class="modal-body">
+      <span class="badge" style="${catStyle(s.cat)}">${esc(s.cat)}</span>
+      <h2 id="modal-title">${esc(s.title)}</h2>
+      <div class="meta"><span>${esc(s.date)}</span><span class="dot"></span><span>Source: ${esc(s.source)}</span></div>
+      <div class="full-text" style="margin-top:14px">${paras}</div>
+      <div class="modal-src">
+        <span class="src-name">Read the complete original article at ${esc(s.source)}:</span>
+        <a class="btn" href="${esc(s.url)}" target="_blank" rel="noopener" style="margin-top:0">Open source
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+      </div>
+    </div>`;
+  lastFocus = document.activeElement;
+  overlay.classList.add("open");
+  document.body.classList.add("modal-open");
+  $("#modal-close").addEventListener("click", closeModal);
+  $("#modal-close").focus();
+}
+function closeModal(){
+  overlay.classList.remove("open");
+  document.body.classList.remove("modal-open");
+  if (lastFocus) lastFocus.focus();
+}
+overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && overlay.classList.contains("open")) closeModal(); });
+
+/* Global click delegation for opening stories */
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-open]");
+  if (t) openStory(Number(t.getAttribute("data-open")));
+});
+
+/* Search + filters */
+$("#search").addEventListener("input", e => { state.query = e.target.value; renderGrid(); });
+$("#filters").addEventListener("click", e => {
+  const chip = e.target.closest(".chip");
+  if (!chip) return;
+  state.cat = chip.getAttribute("data-cat");
+  renderFilters(); renderGrid();
+});
+
+/* Initial render */
+renderHero();
+renderFilters();
+renderGrid();
+renderUpdates();
+</script>
+</body>
+</html>
